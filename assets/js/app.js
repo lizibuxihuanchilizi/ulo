@@ -1,4 +1,4 @@
-﻿/* ULO · 视图层：路由 / 看板 / 模拟器 / 记录 / 猫档案 / 设置 / 实现说明 / 自检 */
+/* ULO · 视图层：路由 / 看板 / 模拟器 / 记录 / 猫档案 / 设置 / 自检 */
 (function (global) {
   'use strict';
   var ULO = global.ULO, util = ULO.util, store = ULO.store, rules = ULO.rules, charts = ULO.charts, ai = ULO.ai;
@@ -113,17 +113,17 @@
     '#/cats': renderCats,
     '#/more': renderMore,
     '#/settings': renderSettings,
-    '#/about': renderAbout,
     '#/selftest': renderSelftest
   };
 
   function route() {
+    closeSheet();
     var hash = location.hash || '#/dashboard';
     var base = hash.split('?')[0];
     var fn = ROUTES[base] || renderDashboard;
-    var titles = { '#/dashboard': '健康看板', '#/simulator': '猫砂盆模拟器', '#/log': '如厕记录', '#/cats': '猫档案', '#/more': '更多', '#/settings': 'AI 设置', '#/about': '实现说明', '#/selftest': '逻辑自检' };
+    var titles = { '#/dashboard': '健康看板', '#/simulator': '猫砂盆模拟器', '#/log': '如厕记录', '#/cats': '猫档案', '#/more': '更多', '#/settings': 'AI 设置', '#/selftest': '逻辑自检' };
     window.scrollTo(0, 0);
-    var showBack = ['#/settings', '#/about', '#/selftest'].indexOf(base) >= 0;
+    var showBack = ['#/settings', '#/selftest'].indexOf(base) >= 0;
     app.innerHTML = topbar(titles[base] || 'ULO', showBack) + '<main class="view" id="view"></main>' + tabbar(base);
     viewEl = document.getElementById('view');
     fn();
@@ -498,7 +498,8 @@
     var now = Date.now();
     viewEl.innerHTML =
       '<div class="section" style="margin-top:4px"><div class="section-head"><h2>猫咪档案</h2><span class="hint">识别与预警的基线来源</span></div>' +
-      '<div class="list" style="gap:10px">' + (cats.length ? cats.map(function (c) {
+      '<button class="btn primary block" data-act="cat-edit" data-id="">+ 新增猫咪</button>' +
+      '<div class="list" style="gap:10px;margin-top:10px">' + (cats.length ? cats.map(function (c) {
         var h = rules.catHealth(c, store.state.visits, now);
         return '<div class="card"><div class="row">' +
           '<img src="' + c.avatar + '" alt="" style="width:52px;height:52px;border-radius:14px;border:1px solid var(--border)">' +
@@ -513,23 +514,33 @@
           '<div class="btn-row" style="margin-top:10px"><button class="btn sm" data-act="cat-edit" data-id="' + c.id + '">编辑</button>' +
           '<button class="btn sm danger" data-act="cat-del" data-id="' + c.id + '">删除</button></div></div>';
       }).join('') : '<div class="empty">还没有猫咪档案</div>') + '</div>' +
-      '<button class="btn primary block" style="margin-top:12px" data-act="cat-edit" data-id="">+ 新增猫咪</button>' +
       '<div class="section banner">基准体重是识别的核心：实测体重与某只猫基线越接近，重量特征的吻合度越高。容差表示可接受的波动范围。</div></div>';
   }
 
   function openCatSheet(id) {
     var c = id ? catById(id) : null;
+    var customAvatar = (c && c.avatar && c.avatar.indexOf('data:') === 0) ? c.avatar : null;
     var mask = document.createElement('div');
     mask.className = 'sheet-mask';
     mask.innerHTML = '<div class="sheet"><div class="grab"></div>' +
       '<h3>' + (c ? '编辑猫咪' : '新增猫咪') + '</h3>' +
       '<div class="field"><label>名字</label><input id="cat-name" value="' + util.esc(c ? c.name : '') + '" placeholder="例如：咪咪"></div>' +
       '<div class="field"><label>花色</label><input id="cat-coat" value="' + util.esc(c ? c.coat : '') + '" placeholder="例如：橘猫"></div>' +
-      '<div class="field"><label>头像</label><div class="row" style="gap:8px">' +
+      '<div class="field"><label>头像</label><div class="row" style="gap:8px;flex-wrap:wrap">' +
       AVATARS.map(function (a, i) {
         var on = c ? c.avatar === a : i === 0;
         return '<img src="' + a + '" data-act="cat-avatar" data-src="' + a + '" alt="" data-selected="' + (on ? '1' : '0') + '" style="width:54px;height:54px;border-radius:14px;border:2px solid ' + (on ? 'var(--accent)' : 'var(--border)') + ';cursor:pointer">';
-      }).join('') + '</div></div>' +
+      }).join('') +
+      (customAvatar
+        ? '<img id="cat-avatar-custom" src="' + customAvatar + '" data-act="cat-avatar" data-src="' + customAvatar + '" alt="" data-selected="1" style="width:54px;height:54px;border-radius:14px;border:2px solid var(--accent);cursor:pointer;object-fit:cover">'
+        : '<div id="cat-avatar-custom-slot" style="display:none"></div>') +
+      '</div>' +
+            '<label class="upload-drop" for="cat-photo-input" id="cat-photo-label">' +
+      '<span class="up-ico">📷</span><span class="up-t1" id="cat-photo-label-t1">上传猫咪照片来录入</span>' +
+      '<span class="up-t2">照片会成为它的头像，并用于提取图像特征参与识别</span></label>' +
+      '<input type="file" id="cat-photo-input" accept="image/*" data-act="cat-photo" style="display:none">' +
+      '<div class="tip">建议用一张光线充足、能看到花纹的正面照。识别时会把这张照片和摄像头画面做特征比对。</div>' +
+      '</div>' +
       '<div class="grid c2">' +
       '<div class="field"><label>基准体重（克）</label><input id="cat-bw" type="number" step="10" value="' + (c ? c.baselineWeightG : 4200) + '"></div>' +
       '<div class="field"><label>容差（克）</label><input id="cat-tol" type="number" step="10" value="' + (c ? c.weightToleranceG : 250) + '"></div>' +
@@ -550,7 +561,6 @@
       '<span class="chip ' + (s.aiMode === 'real' && s.apiKey ? 'ok' : 'ghost') + '">' + (s.aiMode === 'real' && s.apiKey ? '已启用' : '默认') + '</span></div></div>' +
       '<div class="list" style="margin-top:10px">' +
       moreItem('#/settings', 'AI 接入设置', '可选的视觉大模型配置') +
-      moreItem('#/about', '实现说明', '真实硬件方案 + Demo 如何近似 + 工时与踩坑') +
       moreItem('#/selftest', '逻辑自检', '在浏览器里跑一遍断言') +
       '</div>' +
       '<div class="card" style="margin-top:10px">' +
@@ -584,68 +594,6 @@
       '<div class="section banner warn">API Key 只保存在本机浏览器里。因为是纯静态页面，从浏览器直连大模型服务时密钥对使用者是可见的，正式产品应改为服务端代理调用。</div>' +
       '</div>';
   }
-  /* ================= 实现说明 ================= */
-  function renderAbout() {
-    viewEl.innerHTML =
-      '<div class="section md" style="margin-top:4px">' +
-      '<figure><img src="assets/img/litterbox.svg" alt="ULO 猫砂盆硬件结构"><figcaption>真实产品侧的感知结构：4 路称重 + 上方摄像头 + 边缘主控</figcaption></figure>' +
-
-      '<h3>这个 Demo 做了什么</h3>' +
-      '<p>题目要求「让猫厕所看见猫咪」：分辨是哪只猫、记录如厕行为、发现健康异常。这个网页把整条链路都跑通了，而且不需要后端——所有算法都在你的浏览器里运行。</p>' +
-
-      '<h3>真实的 ULO 会怎么做</h3>' +
-      '<ul>' +
-      '<li><b>称重</b>：盆底四角各一个电阻应变式称重传感器（配合 HX711 放大），采样 10–20 Hz，得到猫咪站立时的稳定重量与如厕前后的差值。</li>' +
-      '<li><b>图像</b>：盆体上方一颗广角摄像头，猫咪进入时抓拍 3–5 帧关键帧。</li>' +
-      '<li><b>边缘</b>：ESP32-S3 负责去噪与事件切分（重量从 0 上升、稳定、出现阶跃、归零），只上传关键帧与特征，既省流量也保护隐私。</li>' +
-      '<li><b>识别</b>：重量特征（峰值体重、波动方差）与图像特征（花色直方图、体长体宽比）融合打分取最高；分数太低就判「未确认」。</li>' +
-      '<li><b>健康</b>：单次指标（时长、排出量）加长期趋势（7 日体重斜率、24 小时排尿次数）进规则引擎，再由大模型生成可读的分析。</li>' +
-      '</ul>' +
-
-      '<h3>Demo 里是怎么近似这些的</h3>' +
-      '<div class="step"><b>1</b><div>模拟器按猫咪档案的基准体重生成一条真实形状的重量曲线：进入 → 稳定 → 如厕时阶跃下降 → 离开归零，每 100 ms 采一个点。</div></div>' +
-      '<div class="step"><b>2</b><div>识别用两个真实计算的分数：重量用高斯函数衡量「实测体重与基线体重之差除以容差」；图像用画布提取的 16 维特征向量（12 个色相直方图 + 饱和度 + 明度 + 暗部占比 + 暖色占比）做余弦相似度。</div></div>' +
-      '<div class="step"><b>3</b><div>两者按 0.65 与 0.35 加权，低于阈值、或前两名差距不足 0.06 时输出「身份未确认」。</div></div>' +
-      '<div class="step"><b>4</b><div>规则引擎按个体基线判定 6 类异常：体重下降、排尿频繁、久蹲、尿量偏少、长时间无记录、粪便量偏离。</div></div>' +
-      '<div class="step"><b>5</b><div>点「AI 生成分析」时，本地模式用模板生成中文报告；真实模式把数据连同抓拍图片发给视觉大模型，并要求返回严格 JSON。</div></div>' +
-
-      '<h3>怎么自己跑一遍</h3>' +
-      '<ol style="padding-left:18px;font-size:13px;color:#c6d6ea">' +
-      '<li>看板页：观察预置的合成数据，团子会同时触发体重下降、排尿频繁与久蹲的预警。</li>' +
-      '<li>模拟器页：选「自动」并点开始监测，看整条重量曲线如何演化。</li>' +
-      '<li>切成「冲突样本」再跑一次，看系统如何拒绝给出结论。</li>' +
-      '<li>切成「上传照片」传一张你自己的猫咪照片，看真实图像特征的打分。</li>' +
-      '<li>记录页点任意一条查看判定证据；设置页可切换到真实大模型。</li>' +
-      '</ol>' +
-
-      '<h3>工时记录</h3>' +
-      '<table><tr><th>阶段</th><th>内容</th><th>耗时</th></tr>' +
-      '<tr><td>选题与拆解</td><td>确定 B 方案、划分四个功能模块</td><td>0.5 h</td></tr>' +
-      '<tr><td>素材</td><td>手写 6 个 SVG（3 只猫、结构图、封面、图标）</td><td>1 h</td></tr>' +
-      '<tr><td>核心算法</td><td>识别打分、规则引擎、合成数据</td><td>2.5 h</td></tr>' +
-      '<tr><td>界面与模拟器</td><td>5 个标签页、实时曲线、事件流</td><td>3 h</td></tr>' +
-      '<tr><td>联调与自检</td><td>断言、移动端适配、降级验证</td><td>1 h</td></tr>' +
-      '<tr><td>合计</td><td>—</td><td>约 8 h</td></tr></table>' +
-
-      '<h3>踩过的坑</h3>' +
-      '<ul>' +
-      '<li><b>file:// 下 ES Module 会被 CORS 拦截</b>：双击打开 HTML 时 type="module" 直接报错，所以全部改成传统脚本加全局命名空间，双击也能跑。</li>' +
-      '<li><b>SVG 图片画到 canvas 会被视为污染</b>：本地 file:// 下 getImageData 会抛异常，图像特征提取失败。解决办法是 try/catch 后降级为确定性的哈希特征向量，部署到 https 之后自动恢复真实提取。</li>' +
-      '<li><b>手机端 100vh 会被浏览器工具栏吃掉</b>：改用 100dvh 配合 env(safe-area-inset-bottom)，底部标签栏才不会被 iPhone 的小黑条盖住。</li>' +
-      '<li><b>识别阈值不能太高</b>：一开始设 0.8，同一只猫稍微胖一点就判不出来。改成 0.68 并加入「前两名差距不足 0.06 也算未确认」，才既有区分度又不乱猜。</li>' +
-      '<li><b>重量单位</b>：传感器输出是克，界面要显示千克，合成数据里来回换算极容易写错，最后统一以克存储、只在展示层除 1000。</li>' +
-      '<li><b>浏览器直连大模型会暴露密钥</b>：纯静态页面没有后端可藏，只能作演示用途，README 里已明确标注。</li>' +
-      '</ul>' +
-
-      '<h3>已知局限</h3>' +
-      '<ul>' +
-      '<li>数据是合成的，不能用于任何真实的健康判断。</li>' +
-      '<li>图像识别用的是通用颜色与轮廓特征，不是训练过的猫咪个体识别模型；真实产品需要每只猫的定标样本。</li>' +
-      '<li>规则阈值（例如每天 1.5%）来自常见兽医参考区间，需要在真实数据上重新标定。</li>' +
-      '</ul>' +
-      '</div>';
-  }
-
   /* ================= 自检 ================= */
   function runTests() {
     var T = [];
@@ -756,7 +704,7 @@
   }
 
   function bind() {
-    app.addEventListener('click', function (e) {
+    document.addEventListener('click', function (e) {
       var seg = e.target.closest('.segmented');
       var segVal = e.target.getAttribute && e.target.getAttribute('data-val');
       if (seg && segVal != null) {
@@ -830,7 +778,8 @@
         if (id) store.updateCat(id, payload); else store.addCat(payload);
         closeSheet();
         ensureRefs().then(function () { renderCats(); });
-        toast('已保存', 'ok');
+        if (store.lastError) toast('已加入列表，但写入浏览器存储失败（空间可能已满），刷新后会丢失', 'err');
+        else toast('已保存', 'ok');
         return;
       }
       if (act === 'cat-del') {
@@ -886,7 +835,7 @@
       if (act === 'selftest-run') { renderSelftest(); return; }
     });
 
-    app.addEventListener('input', function (e) {
+    document.addEventListener('input', function (e) {
       var t = e.target.closest('[data-act]');
       if (!t) return;
       var act = t.getAttribute('data-act');
@@ -897,11 +846,41 @@
       if (act === 'sim-photo-weight') UI.photo.weightG = Number(t.value) || 4000;
     });
 
-    app.addEventListener('change', function (e) {
+    document.addEventListener('change', function (e) {
       var t = e.target.closest('[data-act]');
       if (!t) return;
       var act = t.getAttribute('data-act');
       if (act === 'sim-pick') { UI.sim.pick = t.value; return; }
+      if (act === 'cat-photo') {
+        var pf = t.files && t.files[0];
+        if (!pf) return;
+        toast('正在处理照片…');
+        ai.compress(pf, 420).then(function (dataUrl) {
+          var slot = document.getElementById('cat-avatar-custom-slot');
+          var img = document.getElementById('cat-avatar-custom');
+          if (slot) {
+            img = document.createElement('img');
+            slot.parentNode.replaceChild(img, slot);
+          }
+          img.id = 'cat-avatar-custom';
+          img.src = dataUrl;
+          img.alt = '';
+          img.setAttribute('data-act', 'cat-avatar');
+          img.setAttribute('data-src', dataUrl);
+          img.style.cssText = 'width:54px;height:54px;border-radius:14px;border:2px solid var(--accent);cursor:pointer;object-fit:cover';
+          var sib = img.parentNode.querySelectorAll('img');
+          Array.prototype.forEach.call(sib, function (x) {
+            var on = x === img;
+            x.setAttribute('data-selected', on ? '1' : '0');
+            x.style.borderColor = on ? 'var(--accent)' : 'var(--border)';
+          });
+          var lt = document.getElementById('cat-photo-label-t1');
+          if (lt) lt.textContent = '已选择照片 ✓ 点击可更换';
+          document.getElementById('cat-photo-label').classList.add('has-photo');
+          toast('照片已选为本猫头像', 'ok');
+        }).catch(function (err) { toast('照片读取失败：' + err.message, 'err'); });
+        return;
+      }
       if (act === 'sim-photo') {
         var f = t.files && t.files[0];
         if (!f) return;

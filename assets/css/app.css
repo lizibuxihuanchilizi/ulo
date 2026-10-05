@@ -247,3 +247,11 @@ svg{display:block}
   .view{padding-left:20px;padding-right:20px}
   .grid.c3{gap:12px}
 }
+
+/* 上传猫咪照片录入 */
+.field label.upload-drop{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;padding:15px 12px;margin:12px 0 0;border:1.5px dashed var(--border-strong);border-radius:14px;background:var(--accent-soft);cursor:pointer;text-align:center;font-size:13px;font-weight:400;color:var(--text);transition:border-color .15s,background .15s}
+.field label.upload-drop:active{border-color:var(--accent);background:rgba(56,189,248,.2)}
+.field label.upload-drop.has-photo{border-style:solid;border-color:var(--accent)}
+.field label.upload-drop .up-ico{font-size:22px;line-height:1.1;margin:0}
+.field label.upload-drop .up-t1{font-weight:600;font-size:14px;color:var(--text)}
+.field label.upload-drop .up-t2{font-weight:400;font-size:11px;color:var(--muted);line-height:1.45}

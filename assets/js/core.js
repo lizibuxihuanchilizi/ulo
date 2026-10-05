@@ -543,8 +543,14 @@
       }
       return store.reset();
     },
+    lastError: null,
     save: function () {
-      try { global.localStorage.setItem(STORAGE_KEY, JSON.stringify(store.state)); } catch (e) { /* 无痕模式忽略 */ }
+      try {
+        global.localStorage.setItem(STORAGE_KEY, JSON.stringify(store.state));
+        store.lastError = null;
+      } catch (e) {
+        store.lastError = e;
+      }
       return store.state;
     },
     reset: function () {
