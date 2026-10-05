@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="猫砂盆摄像头画面">
+  <defs>
+    <linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#111d2e"/><stop offset="1" stop-color="#080d16"/></linearGradient>
+    <linearGradient id="sand" x1="0.2" y1="0" x2="0.8" y2="1"><stop offset="0" stop-color="#d8c9a8"/><stop offset="1" stop-color="#a8977a"/></linearGradient>
+    <radialGradient id="vig" cx="50%" cy="50%" r="72%"><stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".78"/></radialGradient>
+    <radialGradient id="lamp" cx="50%" cy="34%" r="46%"><stop offset="0" stop-color="#8fe8ff" stop-opacity=".2"/><stop offset="1" stop-color="#8fe8ff" stop-opacity="0"/></radialGradient>
+    <clipPath id="inner"><rect x="52" y="60" width="296" height="290" rx="26"/></clipPath>
+  </defs>
+  <rect width="400" height="400" fill="url(#fl)"/>
+  <rect x="30" y="38" width="340" height="330" rx="34" fill="#16233a" stroke="#243350" stroke-width="3"/>
+  <rect x="52" y="60" width="296" height="290" rx="26" fill="#0d1626"/>
+  <g clip-path="url(#inner)">
+    <rect x="52" y="150" width="296" height="200" fill="url(#sand)"/>
+    <path d="M52 150q74 26 148 4t148 6v-14H52Z" fill="#e6d9bd" opacity=".55"/>
+    <g fill="#7d6f57" opacity=".45">
+      <ellipse cx="106" cy="196" rx="7" ry="4"/><ellipse cx="158" cy="228" rx="6" ry="3.4"/>
+      <ellipse cx="214" cy="188" rx="8" ry="4.4"/><ellipse cx="272" cy="236" rx="6" ry="3.4"/>
+      <ellipse cx="130" cy="272" rx="7" ry="4"/><ellipse cx="196" cy="300" rx="8" ry="4.4"/>
+      <ellipse cx="262" cy="288" rx="6" ry="3.4"/><ellipse cx="308" cy="204" rx="6" ry="3.4"/>
+      <ellipse cx="86" cy="240" rx="5" ry="3"/><ellipse cx="236" cy="330" rx="7" ry="4"/>
+    </g>
+    <g fill="#f2e8d0" opacity=".35">
+      <ellipse cx="140" cy="206" rx="5" ry="3"/><ellipse cx="246" cy="212" rx="6" ry="3.2"/>
+      <ellipse cx="178" cy="262" rx="5" ry="3"/><ellipse cx="296" cy="262" rx="5" ry="3"/>
+    </g>
+    <path d="M52 150h296v-90H52Z" fill="#0d1626"/>
+    <g stroke="#33455f" stroke-width="2" fill="none" opacity=".8">
+      <path d="M52 150h296"/>
+    </g>
+  </g>
+  <rect x="52" y="60" width="296" height="290" rx="26" fill="url(#vig)"/>
+  <rect x="52" y="60" width="296" height="290" rx="26" fill="url(#lamp)"/>
+  <g opacity=".5" fill="#8fe8ff">
+    <circle cx="200" cy="52" r="4"/><circle cx="186" cy="52" r="2" opacity=".6"/><circle cx="214" cy="52" r="2" opacity=".6"/>
+  </g>
+</svg>

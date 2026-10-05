@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="橘猫 咪咪">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#13203a"/><stop offset="1" stop-color="#060b15"/></linearGradient>
+    <radialGradient id="halo" cx="50%" cy="46%" r="52%"><stop offset="0" stop-color="#ffb066" stop-opacity=".3"/><stop offset="1" stop-color="#ffb066" stop-opacity="0"/></radialGradient>
+    <linearGradient id="fur" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9b872"/><stop offset="1" stop-color="#e0813a"/></linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e08c42"/><stop offset="1" stop-color="#b0632a"/></linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <circle cx="200" cy="188" r="176" fill="url(#halo)"/>
+  <path d="M48 400C56 316 108 284 200 284s144 32 152 116Z" fill="url(#body)"/>
+  <path d="M152 312c18-18 78-18 96 0-8 34-30 60-48 88-18-28-40-54-48-88Z" fill="#ffe7c9" opacity=".85"/>
+  <path d="M104 170 96 86l80 44Z" fill="url(#fur)"/>
+  <path d="M296 170 304 86l-80 44Z" fill="url(#fur)"/>
+  <path d="M119 157 115 108l49 28Z" fill="#f8cba9"/>
+  <path d="M281 157 285 108l-49 28Z" fill="#f8cba9"/>
+  <ellipse cx="200" cy="208" rx="122" ry="108" fill="url(#fur)"/>
+  <g fill="#c96f26" opacity=".72">
+    <path d="M200 112l11 28h-22Z"/><path d="M166 120l9 25h-18Z"/><path d="M234 120l9 25h-18Z"/>
+  </g>
+  <g stroke="#c96f26" stroke-width="7" stroke-linecap="round" fill="none" opacity=".55">
+    <path d="M128 184q-18-5-28-13"/><path d="M128 206q-19 0-31-4"/>
+    <path d="M272 184q18-5 28-13"/><path d="M272 206q19 0 31-4"/>
+  </g>
+  <ellipse cx="200" cy="250" rx="64" ry="46" fill="#ffead6" opacity=".92"/>
+  <ellipse cx="155" cy="203" rx="25" ry="28" fill="#2a1a10"/>
+  <ellipse cx="245" cy="203" rx="25" ry="28" fill="#2a1a10"/>
+  <ellipse cx="155" cy="203" rx="9" ry="21" fill="#0b0705"/>
+  <ellipse cx="245" cy="203" rx="9" ry="21" fill="#0b0705"/>
+  <circle cx="147" cy="193" r="6.5" fill="#fff" opacity=".9"/>
+  <circle cx="237" cy="193" r="6.5" fill="#fff" opacity=".9"/>
+  <path d="M200 234l15 13h-30Z" fill="#d9736f"/>
+  <path d="M200 247v9M200 256q-13 12-25 1M200 256q13 12 25 1" stroke="#b3846d" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <g stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".55" fill="none">
+    <path d="M140 244l-42-10M140 254l-44 4M260 244l42-10M260 254l44 4"/>
+  </g>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="ULO 让猫厕所看见猫咪">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b1526"/><stop offset="1" stop-color="#05090f"/></linearGradient>
+    <radialGradient id="halo" cx="76%" cy="40%" r="46%"><stop offset="0" stop-color="#22d3ee" stop-opacity=".3"/><stop offset="1" stop-color="#22d3ee" stop-opacity="0"/></radialGradient>
+    <linearGradient id="txt" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7dd3fc"/><stop offset="1" stop-color="#22d3ee"/></linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="912" cy="252" r="330" fill="url(#halo)"/>
+  <g opacity=".22" stroke="#38bdf8" stroke-width="1">
+    <path d="M0 90h1200M0 180h1200M0 270h1200M0 360h1200M0 450h1200M0 540h1200"/>
+    <path d="M120 0v630M240 0v630M360 0v630M480 0v630M600 0v630M720 0v630M840 0v630M960 0v630M1080 0v630"/>
+  </g>
+  <path d="M96 78 148 130 96 182 44 130Z" fill="none" stroke="url(#txt)" stroke-width="7" stroke-linejoin="round"/>
+  <circle cx="96" cy="130" r="13" fill="#22d3ee"/>
+  <text x="176" y="146" fill="#eaf3ff" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="44" font-weight="800" letter-spacing="2">ULO</text>
+  <text x="96" y="300" fill="#ffffff" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="68" font-weight="800">让猫厕所「看见」猫咪</text>
+  <text x="96" y="360" fill="#8fb0d4" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="28">重力感应 × 图像识别 · 多猫识别 · 如厕行为记录 · 健康异常预警</text>
+  <g font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="22" font-weight="700">
+    <rect x="96" y="416" width="188" height="52" rx="26" fill="rgba(56,189,248,.14)" stroke="#2b6f9c"/>
+    <text x="190" y="449" text-anchor="middle" fill="#9bdcff">多猫识别</text>
+    <rect x="302" y="416" width="188" height="52" rx="26" fill="rgba(56,189,248,.14)" stroke="#2b6f9c"/>
+    <text x="396" y="449" text-anchor="middle" fill="#9bdcff">如厕记录</text>
+    <rect x="508" y="416" width="188" height="52" rx="26" fill="rgba(56,189,248,.14)" stroke="#2b6f9c"/>
+    <text x="602" y="449" text-anchor="middle" fill="#9bdcff">异常预警</text>
+  </g>
+  <text x="96" y="548" fill="#6f8bb0" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="20">Prism 项目组题目 · 选项 B 直接动手 · 纯前端可交互 Demo</text>
+  <g fill="#22d3ee" opacity=".9">
+    <circle cx="1080" cy="500" r="6"/><circle cx="1108" cy="500" r="6" opacity=".6"/><circle cx="1136" cy="500" r="6" opacity=".3"/>
+  </g>
+</svg>
